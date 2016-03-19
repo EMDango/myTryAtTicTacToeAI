@@ -76,6 +76,7 @@ def AlphaBeta(board, alpha, beta, player, profMax):
 		return [heuristic(board), copy.deepcopy(board)]
 	else:
 		e = expand(board, player)
+		ev = []
 		#print profMax
 		#print e
 		#print len(e)
@@ -86,22 +87,26 @@ def AlphaBeta(board, alpha, beta, player, profMax):
 				if(v[0]<beta):
 					beta = v[0]
 					ev=copy.deepcopy(e[0])
-				else:
-					ev=copy.deepcopy(v[1])
+				#else:
+				#	ev=copy.deepcopy(v[1])
 				#if(len(e)!=1):
 				e=e[1:]
 			return [beta, ev]
+			#if profMax == 5:
+			#	print ev
 		else: #player = max
 			while ((len(e) != 0) and (alpha < beta)):
 				v = AlphaBeta(e[0], alpha, beta, inverse(player), profMax-1)
 				if(v[0]>alpha):
 					alpha = v[0]
 					ev=copy.deepcopy(e[0])
-				else:
-					ev=copy.deepcopy(v[1])
+				#else:
+				#	ev=copy.deepcopy(v[1])
 				#if(len(e)!=1):
 				e=e[1:]
 			return [alpha, ev]
+			#if profMax == 5:
+			#	print ev
 
 #def AlphaBeta2(board, alpha, beta, player, profMax):
 #	if ((profMax == 0) or (chekWin(board))):
@@ -182,7 +187,7 @@ def main():
 
 			end = False
 			while (end is False):
-					#os.system('cls')	
+					os.system('cls')	
 					printBoard(board)
 
 					if(player == 'max'):
@@ -191,7 +196,7 @@ def main():
 						playRow = int(playRow)
 						playCol = int(playCol)
 						while((playRow not in [1,2,3]) or (playCol not in [1,2,3])):
-							#os.system('cls')
+							os.system('cls')
 							printBoard(board)
 							playRow = None
 							playCol = None
@@ -200,23 +205,24 @@ def main():
 							playCol = raw_input("Column to play:")
 							playRow = int(playRow)
 							playCol = int(playCol)
-						board = updateBoard(board, playRow-1, playCol-1, player)
+						board = updateBoard(copy.deepcopy(board), playRow-1, playCol-1, player)
 						playCount+=1
 						if(playCount == 9):
 							end = True
-						#os.system('cls')		
+						os.system('cls')		
 						printBoard(board)
 						win = checkWin(board)
 						if(win==1 or win ==2):
 							end = True
 
 						pcPlay = AlphaBeta(board, alpha, beta, inverse(player), prof)
-						print("Found a play")
+						#print("Found a play")
+						#print pcPlay[1]
 						board = copy.deepcopy(pcPlay[1])
 						playCount+=1
 						if(playCount == 9):
 							end = True
-						#os.system('cls')	
+						os.system('cls')	
 						printBoard(board)                    	
 						win = checkWin(board)
 						if(win==1 or win ==2):
